@@ -1,0 +1,117 @@
+<h1>Шифр Плейфера</h1>
+
+<div class="form-container">
+  <h2>Зашифрування</h2>
+  <%= form_with url: cipher_encrypt_path, method: :post, data: { turbo: false }, local: true do |f| %>
+    <div class="form-group">
+      <%= label_tag :alphabet, "Алфавіт" %>
+      <%= text_field_tag :alphabet, @alphabet || "ABCDEFGHIKLMNOPQRSTUVWXYZ" %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :key, "Ключ (слово або фраза)" %>
+      <%= text_field_tag :key, @key %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :text, "Введіть текст для шифрування" %>
+      <%= text_area_tag :text, @text %>
+    </div>
+
+    <%= submit_tag "Зашифрувати" %>
+  <% end %>
+</div>
+
+<div class="form-container">
+  <h2>Розшифрування</h2>
+  <%= form_with url: cipher_decrypt_path, method: :post, data: { turbo: false }, local: true do |f| %>
+    <div class="form-group">
+      <%= label_tag :alphabet, "Алфавіт" %>
+      <%= text_field_tag :alphabet, @alphabet || "ABCDEFGHIKLMNOPQRSTUVWXYZ" %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :key, "Ключ (слово або фраза)" %>
+      <%= text_field_tag :key, @key %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :text, "Введіть текст для розшифрування" %>
+      <%= text_area_tag :text, @result %>
+    </div>
+
+    <%= submit_tag "Розшифрувати" %>
+  <% end %>
+</div>
+
+
+<% if @result.present? %>
+  <div class="result-container">
+    <h2>Результат</h2>
+    <p><strong><%= @result %></strong></p>
+  </div>
+<% end %>
+
+
+<% if @steps.present? %>
+  <div class="steps-container">
+    <h2>Покрокова візуалізація</h2>
+    <ul>
+      <% @steps.each do |step| %>
+        <li><%= step %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+<% if @playfair_square.present? %>
+  <div class="playfair-square-container">
+    <h2>Квадрат Плейфера</h2>
+    <table border="1" cellspacing="0" cellpadding="5">
+      <% @playfair_square.each do |row| %>
+        <tr>
+          <% row.each do |letter| %>
+            <td><%= letter %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<style>
+  .form-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .result-container, .steps-container, .playfair-square-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    background-color: #e7f9e7;
+  }
+
+  h1, h2 {
+    color: #333;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td {
+    text-align: center;
+    padding: 10px;
+  }
+</style>
